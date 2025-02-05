@@ -1,0 +1,108 @@
+﻿@model PaginatedList<DowntimeTracker.Models.Hrm>
+@{
+    ViewData["Title"] = " - Akceptacje - oczekujące";
+    ViewData["Subtitle"] = "Akceptacje - oczekujące";
+}
+<!-- acceptation - awaiting list -->
+<div class="container-fluid my-4">
+    <h1 class="me-auto">@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/> 
+    <div class="mt-4">
+        <div class="row">
+            <!-- menu -->
+            <partial name="_Menu" />
+            <div class="col-12 col-sm-12 col-md-8 col-lg-9 col-xl-9 col-xxl-10">
+                <!-- Table with all records -->
+                <div class="table-responsive">
+                    @if (Model?.Count() > 0)
+                    {
+                        <table id="hrm-table" class="table table-striped">
+                            <thead>
+                                <tr class="text-nowrap">
+                                    <th>#</th>
+                                    <th>HRM Id</th>
+                                    <th>Rok & Tydzień</th>
+                                    <th>Główna Organizacja</th>
+                                    <th>Godziny (razem)</th>
+                                    <th>Ilość Pracowników</th>
+                                    <th>Utworzone Przez</th>
+                                    <th>Data Utworzenia</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                @{ int rowNo = (Model.PageIndex == 1 ? 0 : Model.PageIndex * 40 - 40); }
+                                @foreach (var item in Model) {
+                                    <tr class="align-middle @((item.EndTime - item.StartTime)?.TotalHours < 2 ? "less-hours":"")">
+                                        <th scope="row">@(rowNo += 1)</th>
+                                        <td>@item.HrmId.ToString("000000")</td>
+                                        <td>@item.Year<span>_W</span>@item.Week</td>
+                                        <td>@item.Department</td>
+                                        <td>@item.TotalHours</td>
+                                        <td>@item.EmployeeQty</td>
+                                        <td>@item.User.NameSurname</td>
+                                        <td>@item.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                        <!-- Staus check -->
+                                        <td><span class="badge bg-warning text-dark">Oczekujące</span></td>
+                                        <td class="text-nowrap text-end">
+                                            @if (ViewBag.CurrentUser != item.CreatedBy)
+                                            {
+                                                <a asp-action="ReopenRecord" asp-route-id="@item.HrmId" 
+                                                class="btn-action btn-reopen me-2" data-bs-toggle="tooltip" data-bs-title="Cofnij">
+                                                    <i class="bi bi-arrow-left-square-fill"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.HrmId" asp-route-page="1"
+                                                class="btn-action me-3" data-bs-toggle="tooltip" data-bs-title="Detale">
+                                                    <i class="bi bi-info-square-fill"></i>
+                                                </a>
+                                                <a asp-action="ApproveRecord" asp-route-id="@item.HrmId" 
+                                                class="btn-action btn-save me-2" data-bs-toggle="tooltip" data-bs-title="Zaakceptuj">
+                                                    <i class="bi bi-check-square-fill"></i>
+                                                </a>
+                                                <a asp-action="RefuseRecord" asp-route-id="@item.HrmId" 
+                                                class="btn-action btn-refuse" data-bs-toggle="tooltip" data-bs-title="Odrzuć">
+                                                    <i class="bi bi-x-square-fill"></i>
+                                                </a>
+                                            } 
+                                            else
+                                            {
+                                                <a asp-action="Details" asp-route-id="@item.HrmId" asp-route-page="1"
+                                                class="btn-action me-3" data-bs-toggle="tooltip" data-bs-title="Detale">
+                                                    <i class="bi bi-info-square-fill"></i>
+                                                </a>  
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @if (Model.AllItems > 40) 
+                        {    
+                            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                            var nextDisabled = !Model.HasNextPage ? "disabled" : ""; 
+                            <div class="d-flex justify-content-between pagination">
+                                <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">Poprzednia</a>
+                                    <a class="btn btn-default disabled mx-1">@Model.PageIndex / @Model.TotalPages</a>
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">Następna</a>
+                                </div>
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-6 d-flex justify-content-end counter">
+                                    <a class="btn btn-records-counter disabled">@(Model.PageIndex == 1 ? 1 : Model.PageIndex * 40 - 39) -  @(Model.PageIndex == Model.TotalPages ? Model.AllItems : Model.PageIndex * 40) z @Model.AllItems</a>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="lead missing-text p-2">Brak oczekujących rekordów do wyświetlenia</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="sidebar.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

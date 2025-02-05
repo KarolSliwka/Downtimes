@@ -1,0 +1,155 @@
+﻿@model DowntimeTracker.Models.Hrm
+
+@{
+    ViewData["Title"] = " - HRM - Edycja zasobów";
+    ViewData["Subtitle"] = "HRM - Edycja zasobów";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- create form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <p class="lead events-info">Zdarzenia krótsze niż 2 godziny, mogą nie zostać uznane za "wolne zasoby".</p>
+    <hr class="title-line"/>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="HrmId" />
+        <input type="hidden" asp-for="DowntimeId"/>
+        <input type="hidden" asp-for="Year"/>
+        <input type="hidden" asp-for="Week"/>
+        <input type="hidden" asp-for="UserId"/>
+        <input type="hidden" asp-for="CreatedBy"/>
+        <input type="hidden" asp-for="CreatedAt"/>
+        <div class="row">   
+            <!-- Primary Organization -->
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Department" class="control-label required"></label>
+                    <select asp-for="Department" class="form-control" id="hrm_department">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach(var item in ViewBag.Departments) {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Customer -->
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Customer" class="control-label"></label>
+                    <select asp-for="Customer" class="form-control" id="hrm_customer">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach(var item in ViewBag.Customers) {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Customer" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Cateory -->
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label required"></label>
+                    <select asp-for="Category" class="form-control" id="hrm_category">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach(var item in ViewBag.Categories) {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Reason -->
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="Reason" class="control-label required"></label>
+                    <select asp-for="Reason" class="form-control" id="hrm_reason" asp-items="@ViewBag.Reasons">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                    </select>
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Employees Registerd -->
+            <div class="d-none d-xl-block col-12 col-sm-6 col-lg-4">
+                <div class="form-group">
+                    <label asp-for="EmployeeQty" class="control-label required"></label>
+                    <input asp-for="EmployeeQty" class="form-control" id="hrm_people" min="0" max="1000" placeholder="Min 1 - Max 1000" onchange="HRMEdit()" type="number"/>
+                    <span asp-validation-for="EmployeeQty" class="text-danger"></span>
+                    <small class="calculated-hrs">Godziny (razem): <span id="hrm_total_hours_edit">00.00</span></small>
+                </div>
+            </div>
+            <!-- Start Time -->
+            <div class="col-12 col-sm-6 col-lg-6 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="StartTime" class="control-label required"></label>
+                    <input asp-for="StartTime" class="form-control" id="hrm_time_from" onchange="HRMEdit()"/>
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                    <small class="calculated-hrs">Minimalny czas zdarzenia - 1 godzina</small>
+                </div>
+            </div>
+            <!-- End Time -->
+            <div class="col-12 col-sm-6 col-lg-6 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="EndTime" class="control-label required"></label>
+                    <input asp-for="EndTime" class="form-control" id="hrm_time_to" onchange="HRMEdit()"/>
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                    <small class="calculated-hrs">Czas zdarzenia (godziny): <span id="hrm_hours_edit">00.00</span></small>
+                </div>
+            </div>
+            <!-- Employees Registerd -->
+            <div class="d-block d-xl-none col-12 col-sm-6 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="EmployeeQty" class="control-label required"></label>
+                    <input asp-for="EmployeeQty" class="form-control" id="hrm_people" min="0" max="1000" placeholder="Min 1 - Max 1000" onchange="HRMEdit()" type="number"/>
+                    <span asp-validation-for="EmployeeQty" class="text-danger"></span>
+                    <small class="calculated-hrs">Godziny (razem): <span id="hrm_total_hours_edit">00.00</span></small>
+                </div>
+            </div>
+            <!-- Is UA -->
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="form-group d-flex flex-column">
+                    <label asp-for="IsUA" class="control-label required"></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input is-corrected" type="checkbox" role="switch" id="IsUA" asp-for="IsUA" />
+                        @if (Model.IsUA == true)
+                        {
+                            <label class="form-check-label is-corrected-label" for="IsUA">Tak</label>
+                        }
+                        else
+                        {
+                            <label class="form-check-label is-corrected-label" for="IsUA">Nie</label>
+                        }
+                    </div>
+                    <span asp-validation-for="IsUA" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <!-- Commentary -->
+            <div class="col-12">
+                <div class="form-group">
+                    <label asp-for="Commentary" class="control-label required"></label>
+                    <textarea asp-for="Commentary" id="commentary" class="form-control" rows="4" minlength="10" maxlength="1024" placeholder="Minimalna ilość znaków 10 (maksymalnie 1000 znaków)"></textarea>
+                    <span asp-validation-for="Commentary" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <!-- buttons -->
+        <div class="row buttons mb-4">
+            <div class="col-12 col-sm-6">
+                <button type="reset" class="btn btn-primary" id="create_reset" onclick="HRMEditClear()">Przywróć</button>
+            </div>
+            <div class="col-12 col-sm-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary" id="add_btn" onclick="HRMClearCoockies()">Zapisz</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/js/hrm.js" asp-append-version="true"></script>
+    <script src="~/js/hrmEdit.js" asp-append-version="true"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

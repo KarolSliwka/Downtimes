@@ -1,0 +1,92 @@
+﻿@model DowntimeTracker.Models.Downtime
+
+@{
+    ViewData["Title"] = " - Potwierdzenie roszczenia";
+    ViewData["Subtitle"] = "Potwierdzenie roszczenia";
+    DateTime eTime = Model?.EventEndTime ?? Model.EventStartTime;
+    TimeSpan time = eTime - Model.EventStartTime;
+}
+<!-- go back button -->
+<a class="btn btn-back" asp-controller="Downtimes" asp-action="Index" 
+    asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+    asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo" 
+    asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo"
+    asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+    asp-route-userId="@ViewBag.FilterCreator">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- downtime details -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <p class="lead fw-bold fs-6">Czy napewno chcesz potwierdzić dodanie roszczenia dla:</p>
+    <hr class="title-line"/>
+    <div class="row">
+        <form asp-action="Claim">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DowntimeId" />
+            <input type="hidden" asp-for="Year"/>
+            <input type="hidden" asp-for="Week"/>
+            <input type="hidden" asp-for="Site"/>
+            <input type="hidden" asp-for="EventStartTime"/>
+            <input type="hidden" asp-for="EventEndTime"/>
+            <input type="hidden" asp-for="Department"/>
+            <input type="hidden" asp-for="Customer"/>
+            <input type="hidden" asp-for="Category"/>
+            <input type="hidden" asp-for="Reason"/>
+            <input type="hidden" asp-for="PeopleAffected"/>
+            <input type="hidden" asp-for="TotalHours"/>
+            <input type="hidden" asp-for="IsClaimable" />
+            <input type="hidden" asp-for="Commentary"/>
+            <input type="hidden" asp-for="MachineLineAreaId"/>
+            <input type="hidden" asp-for="ApproverEmailADID"/>
+            <input type="hidden" asp-for="CreatedBy"/>
+            <input type="hidden" asp-for="UserId"/>
+            <input type="hidden" asp-for="CreationDate"/>
+            <input type="hidden" asp-for="Claimed"/>
+            <input type="hidden" asp-for="ClaimedBy"/>
+            <input type="hidden" asp-for="ClaimedAt"/>
+            <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+            <input type="hidden" name="pageNumber" value="@ViewBag.pageNumber" />
+            <input type="hidden" name="year_from" value="@ViewBag.FilterYearFrom" />
+            <input type="hidden" name="year_to" value="@ViewBag.FilterYearTo" />
+            <input type="hidden" name="week_from" value="@ViewBag.FilterWeekFrom" />
+            <input type="hidden" name="week_to" value="@ViewBag.FilterWeekTo" />
+            <input type="hidden" name="claimed" value="@ViewBag.FilterClaimed" />
+            <input type="hidden" name="department" value="@ViewBag.FilterDepartment" />
+            <input type="hidden" name="userId" value="@ViewBag.FilterCreator" />
+            <dl class="row">
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.DowntimeId)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.DowntimeId)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.User.NameSurname)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreationDate)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.CreationDate)</dd>
+                <dd><hr /></dd>
+                <dt class="col-lg-4">Rok & Tydzień</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.Year)<span>_W</span>@Html.DisplayFor(model => model.Week)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Department)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.Department)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.MachineLineAreaId)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.MachineLineArea.Name)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Customer)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.Customer)</dd>
+                <dt class="col-lg-4">Kategoria - Powód</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.Category) - @Html.DisplayFor(model => model.Reason)</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.EventStartTime) - @Html.DisplayNameFor(model => model.EventEndTime)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.EventStartTime) - @(Model.EventEndTime != null ? Model.EventEndTime.ToString(): "Brak czasu zakończenia")</dd>
+                <dt class="col-lg-4">Czas</dt>
+                <dd class="col-lg-8">@time.TotalHours.ToString("0.00") h</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.TotalHours) - (@Html.DisplayNameFor(model => model.PeopleAffected))</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.TotalHours) h (@Html.DisplayFor(model => model.PeopleAffected))</dd>
+                <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Commentary)</dt>
+                <dd class="col-lg-8">@Html.DisplayFor(model => model.Commentary)</dd>
+            </dl>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Potwierdź"/>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

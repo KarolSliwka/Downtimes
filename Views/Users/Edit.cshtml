@@ -1,0 +1,73 @@
+﻿@model DowntimeTracker.Models.User
+@{
+    ViewData["Title"] = " - Edycja użytkownika";
+    ViewData["Subtitle"] = "Edycja użytkownika";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- create form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="UserId" />
+        <div class="row">       
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="UserAd" class="control-label required"></label>
+                    <input asp-for="UserAd" class="form-control" minlegth="10" maxlength="20" placeholder="EUROPE\tcz*****"/>
+                    <span asp-validation-for="UserAd" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="NameSurname" class="control-label required"></label>
+                    <input asp-for="NameSurname" class="form-control" placeholder="Wpisz.."/>
+                    <span asp-validation-for="NameSurname" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">       
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="AccessLevel" class="control-label required"></label>
+                    <select asp-for="AccessLevel" class="form-control" asp-items="@ViewBag.AccessLevels">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                    </select>
+                    <span asp-validation-for="AccessLevel" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="HrmAvailable" class="control-label required"></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input is-corrected" type="checkbox" role="switch" id="HrmAvailable" asp-for="HrmAvailable" />
+                        @if (Model.HrmAvailable == true)
+                        {
+                            <label class="form-check-label is-corrected-label" for="HrmAvailable">Tak</label>
+                        }
+                        else
+                        {
+                            <label class="form-check-label is-corrected-label" for="HrmAvailable">Nie</label>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- buttons -->
+        <div class="row buttons mb-4">
+            <div class="col-12 col-sm-6">
+                <button type="reset" class="btn btn-primary">Przywróć</button>
+            </div>
+            <div class="col-12 col-sm-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

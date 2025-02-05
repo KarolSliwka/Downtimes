@@ -1,0 +1,62 @@
+﻿@model DowntimeTracker.Models.Downtime
+@{
+    ViewData["Title"] = " - Detale";
+    ViewData["Subtitle"] = "Detale";
+    DateTime eTime = Model?.EventEndTime ?? Model.EventStartTime;
+    TimeSpan time = eTime - Model.EventStartTime;
+}
+<!-- go back button -->
+<a class="btn btn-back" asp-controller="Downtimes" asp-action="Index" 
+    asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+    asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo" 
+    asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo"
+    asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+    asp-route-userId="@ViewBag.FilterCreator">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- downtime details -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <dl class="row">
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.DowntimeId)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.DowntimeId)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.User.NameSurname)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreationDate)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.CreationDate)</dd>
+        <dd><hr /></dd>
+        <dt class="col-lg-4">Rok & Tydzień</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Year)<span>_W</span>@Html.DisplayFor(model => model.Week)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Department)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Department)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.MachineLineAreaId)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.MachineLineArea.Name)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Customer)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Customer)</dd>
+        <dt class="col-lg-4">Kategoria - Powód</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Category) - @Html.DisplayFor(model => model.Reason)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.EventStartTime) - @Html.DisplayNameFor(model => model.EventEndTime)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.EventStartTime) - @(Model.EventEndTime != null ? Model.EventEndTime.ToString(): "Brak czasu zakończenia")</dd>
+        <dt class="col-lg-4">Czas</dt>
+        <dd class="col-lg-8">@time.TotalHours.ToString("0.00") h</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.TotalHours) - (@Html.DisplayNameFor(model => model.PeopleAffected))</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.TotalHours) h (@Html.DisplayFor(model => model.PeopleAffected))</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Commentary)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Commentary)</dd>
+        <dd><hr /></dd>
+        @if (Model.Claimed == true)
+        {
+            <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Claimed)</dt>
+            <dd class="col-lg-8">Tak</dd>
+            <dt class="col-lg-4">@Html.DisplayNameFor(model => model.ClaimedBy)</dt>
+            <dd class="col-lg-8">@Html.DisplayFor(model => model.ClaimedBy)</dd>
+            <dt class="col-lg-4">@Html.DisplayNameFor(model => model.ClaimedAt)</dt>
+            <dd class="col-lg-8">@Model.ClaimedAt?.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+        } else
+        {
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Claimed)</dt>
+        <dd class="col-lg-8">Nie</dd>
+        }
+    </dl>
+</div>

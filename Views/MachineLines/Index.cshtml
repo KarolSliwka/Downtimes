@@ -1,0 +1,86 @@
+﻿@model PaginatedList<DowntimeTracker.Models.MachineLineArea>
+
+@{
+    ViewData["Title"] = " - Obszar/Maszyna/Linia";
+    ViewData["Subtitle"] = "Obszar/Maszyna/Linia";
+}
+<!-- areas/machines/lines list -->
+<div class="container-fluid my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <!-- create button -->
+    @if (User.IsInRole("super") || User.IsInRole("admin"))
+    {
+        <div class="text-end">
+            <a asp-action="Create" class="btn btn-primary mt-0 mb-2">Dodaj</a>
+        </div>
+    }
+    <!-- table -->
+    <div class="table-responsive">
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Główna Organizacja</th>
+                        <th>Nazwa</th>
+                        <th>Tryb Pracy</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                @{ int rowNo = (Model.PageIndex == 1 ? 0 : Model.PageIndex * 20 - 20); }
+                @foreach (var item in Model) {
+                    <tr class="align-middle">
+                        <th scope="row">@(rowNo += 1)</th>
+                        @switch (item.Type)
+                        {
+                            case 0: 
+                                <th>Obszar</th>
+                                break;
+                            case 1: 
+                                <th>Maszyna</th>
+                                break;
+                            case 2:
+                                <th>Linia</th>
+                                break;
+                        }
+                        <td>@item.Department</td>
+                        <td>@item.Name</td>
+                        <td>@item.OperatingTime godz.</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Edit" asp-route-id="@item.MachineLineAreaId" class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Edytuj">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.MachineLineAreaId" class="btn-action " data-bs-toggle="tooltip" data-bs-title="Usuń">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @if (Model.AllItems > 20) 
+            {    
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : ""; 
+                <div class="d-flex justify-content-between pagination">
+                    <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">Poprzednia</a>
+                        <a class="btn btn-default disabled mx-1">@Model.PageIndex / @Model.TotalPages</a>
+                        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">Następna</a>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-4 col-lg-6 d-flex justify-content-end counter">
+                        <a class="btn btn-records-counter disabled">@(Model.PageIndex == 1 ? 1 : Model.PageIndex * 20 - 19) -  @(Model.PageIndex == Model.TotalPages ? Model.AllItems : Model.PageIndex * 20) z @Model.AllItems</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="lead missing-text">Brak rekordów w bazie danych</p>
+        }
+    </div>
+</div>

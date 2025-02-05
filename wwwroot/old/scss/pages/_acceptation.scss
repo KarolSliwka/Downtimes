@@ -1,0 +1,50 @@
+﻿#acceptation {
+
+    .nav-tabs {
+        border-bottom: none;
+
+        .nav-item {
+            &:nth-child(2), &:nth-child(3), &:nth-child(4) {
+                margin-left: .25rem !important;
+            }
+        }
+
+        .nav-link {
+            border: 2px solid #383737;
+            border-bottom: 0;
+            background-color: #383737;
+            color: #fff;
+            margin-bottom: 0;
+
+            &:hover {
+                border: 2px solid #fff;
+                border-bottom: none;
+                background-color: #383737;
+                box-shadow: none;
+            }
+        }
+
+        .active {
+            border: 2px solid #fff;
+            border-bottom: none;
+            background-color: #383737;
+            box-shadow: none !important;
+        }
+
+        .bi-clock-fill {
+            color: #ffc107;
+        }
+
+        .bi-x-circle-fill {
+            color: #dc3545;
+        }
+
+        .bi-check-circle-fill {
+            color: #198754;
+        }
+    }
+
+    .active {
+        box-shadow: none !important;
+    }
+}

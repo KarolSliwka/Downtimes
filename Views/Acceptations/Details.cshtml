@@ -1,0 +1,91 @@
+﻿@model DowntimeTracker.Models.Hrm
+@{
+    ViewData["Title"] = " - HRM - Szczegóły zasobów";
+    ViewData["Subtitle"] = "HRM - Szczegóły zasobów";
+    DateTime eTime = Model.EndTime ?? Model.StartTime;
+    TimeSpan time = eTime - Model.StartTime;
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- hrm detalis -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <dl class="row">
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.HrmId)</dt>
+        <dd class="col-lg-8">@Model.HrmId.ToString("000000")</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.User.NameSurname)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+        <dd class="col-lg-8">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+        <dd><hr /></dd>
+        <dt class="col-lg-4">Rok & Tydzień</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Year)<span>_W</span>@Html.DisplayFor(model => model.Week)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Department)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Department)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Customer)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Customer)</dd>
+        <dt class="col-lg-4">Kategoria - Powód</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Category) - @Html.DisplayFor(model => model.Reason)</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.StartTime) - @Html.DisplayNameFor(model => model.EndTime)</dt>
+        <dd class="col-lg-8">@Model.StartTime.ToString("yyyy-MM-dd HH:mm:ss") - @(Model.EndTime != null ? Model.EndTime?.ToString("yyyy-MM-dd HH:mm:ss"): "Brak czasu zakończenia")</dd>
+        <dt class="col-lg-4">Czas</dt>
+        <dd class="col-lg-8">@time.TotalHours.ToString("0.00") h</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.TotalHours) - (@Html.DisplayNameFor(model => model.EmployeeQty))</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.TotalHours) h (@Html.DisplayFor(model => model.EmployeeQty))</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.IsUA)</dt>
+        @if (Model.IsUA == true)
+        {
+            <dd class="col-lg-8">Tak</dd>
+        }
+        else
+        {
+            <dd class="col-lg-8">Nie</dd>
+        }
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Commentary)</dt>
+        <dd class="col-lg-8">@Html.DisplayFor(model => model.Commentary)</dd>
+        <dd><hr /></dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Status)</dt>
+        @if (Model.Status == 0)
+        {
+            <dd class="col-lg-8">Wniosek otwarty</dd>
+        }
+        else {
+            <dd class="col-lg-8">Wniosek zamknięty</dd>
+        }
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.ClosedById)</dt>
+        <dd class="col-lg-8">@ViewBag.ClosedBy</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.ClosedAt)</dt>
+        <dd class="col-lg-8">@Model.ClosedAt?.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.ApprovalStatus)</dt>
+        @if (Model.Status == 0)
+        {
+            <dd class="col-lg-8">Oczekuje na zamknięcie</dd>
+        }
+        else
+        {
+            switch (Model.ApprovalStatus)
+            {
+                case 0:
+                    <dd class="col-lg-8">Przesłany do akceptacji</dd>
+                    break;
+                case 1:
+                    <dd class="col-lg-8">Zaakceptowany</dd>
+                    break;
+                case 2:
+                    <dd class="col-lg-8">Odrzucony</dd>
+                    break;
+            }
+        }
+        <dt class="col-lg-4">@Html.DisplayNameFor(model => model.Approver)</dt>
+        @if (Model.Approver != null)
+        {
+            <dd class="col-lg-8">@Html.DisplayFor(model => model.Approver)</dd>
+        }
+        else {
+            <dd class="col-lg-8">Nie przypisana</dd>
+        }
+    </dl>
+</div>

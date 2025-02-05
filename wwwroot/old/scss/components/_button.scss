@@ -1,0 +1,267 @@
+﻿.btn-back {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #fff;
+    max-width: 150px;
+    border: 0;
+    background-color: transparent;
+}
+
+.btn-reset, .btn-send, .btn-remove{
+    margin-top: 1rem;
+    width: 160px;
+    border: 2px solid rgba(#ccc,.25);
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000;
+}
+
+$button_main: #8080807c;
+.btn-main {
+    color: #fff;
+    background-color: $button_main;
+    border: 2px solid $button_main;
+}
+
+.btn-create {
+    @extend .btn-main;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    margin: auto 0;
+    min-width: 112px;
+}
+
+// inactive buttons
+.btn-inactive {
+    opacity: .4;
+    cursor: not-allowed;
+
+    &:hover {
+        border: 2px solid rgba(#ccc,.25) !important;
+        opacity: .4;
+    }
+}
+
+// hrm buttons 
+.btn-hrm {
+    color: #fff;
+    float: right;
+    vertical-align: middle;
+    font-size: 1.125rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: .625rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    opacity: .4;
+}
+
+.btn-delete,
+.btn-edit,
+.btn-details {
+    opacity: .7;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+/*.btn-edit {
+    color: #1fb5c5;
+    opacity: 1;
+
+    &:hover {
+        color: #00e6ff;
+    }
+}
+
+.btn-details {
+    color: #deb949;
+    opacity: 1;
+
+    &:hover {
+        color: #ffc107;
+    }
+}*/
+
+.btn-save {
+    color: #82BC00;
+    opacity: 1;
+
+    &:hover {
+        color: #b0fe00;
+    }
+}
+
+.btn-refuse {
+    color: #ee6f6f; //#ea5a5a
+    opacity: 1;
+
+    &:hover {
+        color: #ff3535;
+    }
+}
+
+.btn-reopen {
+    color: #1fb5c5;
+    opacity: 1;
+
+    &:hover {
+        color: #00e6ff;
+    }
+}
+
+.btn-send, .btn-reset, .btn-remove, .btn-create {
+    @extend .btn-main;
+
+    &:hover, &:active, &:focus, &:focus-visible {
+        color: #fff !important;
+        background-color: rgba($button_main,1) !important;
+        border-color: #fff;
+    }
+}
+
+.btn-send:disabled {
+    @extend .btn-main;
+    background-color: transparent;
+}
+
+.btn-apply-filters {
+    @extend .btn-main;
+    height: 40px;
+    width: 100%;
+
+    &:hover, &:active, &:focus, &:focus-visible {
+        color: #fff !important;
+        background-color: rgba($button_main,1) !important;
+        border-color: #fff;
+    }
+
+    &:disabled {
+        @extend .btn-main;
+        background-color: transparent;
+    }
+}
+
+.btn-clear-filters {
+    @extend .btn-main;
+    width: 100%;
+    height: 40px;
+
+    &:hover, &:active, &:focus, &:focus-visible {
+        color: #fff !important;
+        background-color: rgba($button_main,1) !important;
+        border-color: #fff;
+    }
+
+    &:disabled {
+        @extend .btn-main;
+        background-color: transparent;
+    }
+}
+
+.export-buttons {
+    display:flex;
+    padding: 0 10px;
+
+    .btn-raptor, .btn-excel {
+        border-radius: 0.375rem;
+        border: 2px solid rgba(#ccc,.25);
+        padding: 0.5rem 1rem;
+        background: rgba(#ccc,.25);
+        color: #fff;
+
+        &:hover, &:active, &:focus, &:focus-visible {
+            color: #fff !important;
+            background-color: rgba($button_main,1) !important;
+            border-color: #fff;
+        }
+
+
+    }
+
+    .btn-raptor {
+        flex: 1;
+        justify-content: center;
+
+        img {
+            height: 22px;
+            width: auto;
+        }
+    }
+
+    .btn-excel {
+        flex: 2;
+        justify-content: center;
+        margin-left: .5rem;
+
+        img {
+            height: 22px;
+            width: auto;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+// button back to the top
+.btn-up {
+    position: fixed;
+    display: none;
+    bottom: 30px;
+    right: 34px;
+    background-color: rgb(130, 188, 0) !important;
+    box-shadow: rgba(0, 0, 0,0.65) 0px 0px 14px;
+    border-radius: 1.5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    color: #fff !important;
+
+    i {
+        display: flex;
+        justify-content: center;
+        margin-left: 1px;
+    }
+
+    &:active, &:hover, &:focus, &:focus-visible {
+        color: #fff !important;
+        background-color: rgb(130, 188, 0) !important;
+    }
+}
+
+// media and others
+@media (max-width: 1199.98px) {
+    .btn-apply-filters, .btn-clear-filters {
+        margin-top: 1.65rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    #downtime-list-top {
+        flex-direction: column;
+
+        .btn-raptor, .btn-excel {
+            max-width: 50%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .machines-top {
+        flex-direction: column;
+        
+        .btn-create {
+            max-width: 160px;
+        }
+    }
+
+    .btn-reset, .btn-send, .btn-remove {
+        width: 100%;
+    }
+}

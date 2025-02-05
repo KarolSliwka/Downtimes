@@ -1,0 +1,36 @@
+﻿#home {
+    background-color: $main_blue;
+    
+    main{
+        margin-top: auto;
+
+        .home-bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            h1 {
+                font-weight: 900;
+                color: #fff;
+                text-transform: uppercase;
+                font-size: 3rem;
+            }
+
+            p {
+                font-weight: 400;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .home-bg {
+                img {
+                    margin-top: 3rem;
+                }
+            }
+        }
+    }
+}

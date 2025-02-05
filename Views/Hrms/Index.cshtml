@@ -1,0 +1,143 @@
+﻿@model IEnumerable<DowntimeTracker.Models.Hrm>
+
+@{
+    ViewData["Title"] = " - HRM - Moja lista zasobów";
+    ViewData["Subtitle"] = "HRM - Moja lista zasobów";
+    var currentDate = DateTime.Now;
+}
+<!-- hrm - my list -->
+<div class="container-fluid my-4">
+    <h1 class="me-auto">@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/> 
+    <!-- create button -->
+    <div class="text-end">
+        <a asp-action="Create" class="btn btn-primary mt-0 mb-2">Dodaj</a>
+    </div>
+</div>
+<!-- Table with all records -->
+<div class="table-responsive">
+    @if (Model.Count() > 0)
+    {
+    <table id="hrm-table" class="table table-striped">
+        <thead>
+            <tr class="text-nowrap">
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.HrmId)</th>
+                <th>Rok & Tydzień</th>
+                <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+                <th>@Html.DisplayNameFor(model => model.EndTime)</th>
+                <th>Czas</th>
+                <th>@Html.DisplayNameFor(model => model.Department)</th>
+                <th>@Html.DisplayNameFor(model => model.Category)</th>
+                <th>@Html.DisplayNameFor(model => model.Reason)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalHours)</th>
+                <th>@Html.DisplayNameFor(model => model.EmployeeQty)</th>
+                <th>@Html.DisplayNameFor(model => model.IsUA)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @{
+                int rowNo = 0;
+            }
+            @foreach (var item in Model) {
+                <tr class="align-middle @(((currentDate - item.CreatedAt).TotalHours > 12 && item.Status == 0)? "record-alert":"")">
+                <th scope="row">@(rowNo += 1)</th>
+                <td>@item.HrmId.ToString("000000")</td>
+                <td>@item.Year<span>_W</span>@item.Week</td>
+                <td>@item.StartTime.ToString("yyyy-MM-dd HH:mm")</td>
+                @if (item.EndTime == null) {
+                    <td>Brak..</td>
+                }
+                else
+                {
+                    <td>@item.EndTime?.ToString("yyyy-MM-dd HH:mm")</td>
+                            
+                }
+                <td class="text-nowrap">
+                    @{DateTime eTime = item.EndTime ?? item.StartTime;
+                    TimeSpan time = eTime - item.StartTime;}
+                    @time.TotalHours.ToString("0.00") h
+                </td>
+                <td>@item.Department</td>
+                <td>@item.Category</td>
+                <td>@item.Reason</td>
+                <td>@item.TotalHours</td>
+                <td>@item.EmployeeQty</td>
+                @if (item.IsUA == true)
+                {
+                    <td>Tak</td>           
+                }
+                else
+                {
+                    <td>Nie</td>           
+                }    
+                <!-- Staus check -->
+                @if (item.Status == 0)
+                {
+                    <td><span class="badge bg-light text-dark">Otwarty</span></td>
+                }
+                else {
+                    switch (item.ApprovalStatus)
+                    {
+                        case 0:
+                            <td><span class="badge bg-warning text-dark">Oczekuje na akceptacje</span></td> 
+                            break;
+                        case 1:
+                            <td><span class="badge bg-success text-white">Zaakceptowany</span></td>
+                            break;
+                        case 2:
+                            <td><span class="badge bg-danger text-white">Odrzucony</span></td>
+                            break;
+                    }
+                }
+                <!-- Buttons -->
+                <td class="text-nowrap text-end">
+                    <a asp-action="Details" asp-route-id="@item.HrmId"
+                        class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Detale">
+                        <i class="bi bi-info-square-fill"></i>
+                    </a>
+                    @if (item.Status == 0)
+                    {
+                    <a asp-action="Edit" asp-route-id="@item.HrmId"
+                        class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Edytuj">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.HrmId"
+                        class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Usuń">
+                        <i class="bi bi-trash3-fill"></i>
+                    </a>
+                        @if (item.EmployeeQty > 1)
+                        {
+                            <a asp-action="Duplicate" asp-route-id="@item.HrmId"
+                            class="btn-action me-3" data-bs-toggle="tooltip" data-bs-title="Podziel zasoby">
+                                <i class="bi bi-send-plus-fill"></i>
+                            </a>
+                        }
+                        @if (item.EndTime != null)
+                        {
+                            <a asp-action="CloseRecord" asp-route-id="@item.HrmId"
+                                class="btn-action btn-save me-2" data-bs-toggle="tooltip" data-bs-title="Prześlij do akceptacji">
+                                <i class="bi bi-check-square-fill"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span
+                                class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Brakujące dane - nie można przesłać do akceptacji" disabled>
+                                <i class="bi bi-check-square-fill"></i>
+                            </span>     
+                        }
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <p class="lead missing-text p-2">Brak rekordów w do wyświetlenia</p>
+    }
+</div>

@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Meta -->
+    <meta name="keywords" content="expense, expenses, loss, losses, report, reporting, downtime, machine, people, time, affected, tczew, poland, application, applications, flextronics, flex">
+    <meta name="description" content="Tracker for machines and manual operations downtime">
+    <meta name="copyright" content="Flextronics International Poland. Sp. Z O.o.">
+    <meta name="language" content="EN">
+    <meta name="robots" content="index,follow">
+    <meta name="Classification" content="Business">
+    <meta name="author" content="Karol Śliwka, karoljacek.sliwka@flex.com">
+    <meta name="designer" content="Karol Śliwka, karoljacek.sliwka@flex.com">
+    <meta name="reply-to" content="karoljacek.sliwka@flex.com">
+    <meta name="owner" content="Flextronics International Poland. Sp. Z O.o.">
+    <meta name="url" content="https://tcznt19.europe.ad.flextronics.com:444/DowntimeTracker">
+    <meta name="identifier-URL" content="https://tcznt19.europe.ad.flextronics.com:444/DowntimeTracker">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/css/main.min.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="~/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon/favicon-16x16.png">
+    <link rel="manifest" href="~/favicon/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Title -->
+    <title>Downtime Tracker @ViewData["Title"]</title>
+</head>
+  <body class="d-flex flex-column h-100">
+    <!-- Header -->
+    <partial name="Layout/Header/_Nav" />
+    <!-- Main Content -->
+    <main role="main" class="flex-shrink-0">
+        <div class="container-main">
+            @RenderBody()
+        </div>
+    </main>
+    <!-- Footer -->
+    <partial name="Layout/Footer/_Footer" />
+    <!-- GoTop Button-->
+    <button type="button" class="btn btn-up" id="btn-back-to-top">
+        <i class="bi bi-arrow-up-circle"></i>
+    </button>
+    <!-- JS Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- Bundles -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/homebutton.js"></script>
+    <script src="~/js/populate.js"></script>
+    <!-- MmentsJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <!-- SweetAlerJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        let RootUrl = '@Url.Content("~/")';
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("NToastNotify")
+    @await Component.InvokeAsync("Notyf")
+</body>
+</html>

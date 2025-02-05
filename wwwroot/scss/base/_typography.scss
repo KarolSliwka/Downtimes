@@ -1,0 +1,79 @@
+﻿h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat',Arial, Helvetica, sans-serif !important;
+}
+
+h1 {
+    font-size: 1.625em;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--fuchsia-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem; //2rem
+}
+
+h2 {
+    font-size: 1.25em;
+    font-weight: 600;
+    background: var(--fuchsia-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    margin-bottom: 1rem; //2rem
+}
+
+h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    background: var(--fuchsia-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem; //2rem
+}
+
+#home {
+    h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: #fff;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: .5rem;
+        z-index: 99999999;
+    }
+
+    .lead {
+        margin-bottom: 2rem;
+        z-index: 99999999;
+    }
+}
+
+.title-line {
+    opacity: 1;
+    height: 4px;
+    border: none;
+    background-color: #f3f3f3;
+}
+
+.hr-middle {
+    opacity: 1;
+    height: 4px;
+    border: none;
+    background-color: #b3b3b3;
+    opacity: .15;
+}
+
+.missing-text {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.events-info {
+    color: #ff5500;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.text-purple {
+    color: $d_fuchsia !important;
+}

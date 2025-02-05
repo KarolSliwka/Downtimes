@@ -1,0 +1,40 @@
+﻿<!-- categories table -->
+<div class="table-responsive">
+    <table class="table table-striped mb-0">
+        <!-- headers -->
+        <thead>
+            <tr class="text-nowrap">
+                <th>#</th>
+                <th>Kategoria</th>
+                <th>Powód</th>
+                <th>Kategoria - 4M</th>
+                <th>Podlega Roszczeniu</th>
+                <th>Typ</th>
+                <th>Przykład (PL)</th>
+                <th>Osoba Odpowiedzialna</th>
+            </tr>
+        </thead>
+        <!-- content -->
+        <tbody class="table-group-divider">
+        @{ int rowNo = 0; }
+        @foreach(var item in Model)
+        {
+        <tr class="align-middle">
+            <th scope="row">@(rowNo += 1)</th>
+            <td class="text-nowrap">@item.Category</td>
+            <td class="text-nowrap">@item.CorporateReason</td>
+            <td class="text-nowrap">@item.M4Category</td>
+            @if(item.IsClaimable == true){
+                <td>Tak</td>
+            } 
+            else {
+                <td>Nie</td>
+            }
+            <td class="text-nowrap">@item.Type</td>
+            <td>@item.Explanation</td>
+            <td class="text-end">@item.Responsible</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>

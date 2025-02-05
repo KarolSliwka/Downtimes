@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DowntimeTracker.Models.Hrm>
+
+@{
+    ViewData["Title"] = " - HRM - Wolne Zasoby";
+    ViewData["Subtitle"] = "HRM - Wolne Zasoby";
+}
+<!-- free resources list -->
+<div class="container-fluid my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <!-- table -->
+    <div class="table-responsive">
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th>@Html.DisplayNameFor(model => model.HrmId)</th>
+                        <th>Rok & Tydzień</th>
+                        <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.EndTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.Department)</th>
+                        <th>@Html.DisplayNameFor(model => model.Category)</th>
+                        <th>@Html.DisplayNameFor(model => model.Reason)</th>
+                        <th>@Html.DisplayNameFor(model => model.TotalHours)</th>
+                        <th>@Html.DisplayNameFor(model => model.EmployeeQty)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsUA)</th>
+                        <th>Dodane Przez</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>@item.HrmId.ToString("000000")</td>
+                        <td>@Html.DisplayFor(modelItem => item.Year)<span>_W</span>@item.Week.ToString("00")</td>
+                        <td>@Html.DisplayFor(modelItem => item.StartTime)</td>
+                        @if (item.EndTime == null) {
+                            <td>Brak..</td>
+                        }
+                        else
+                        {
+                            <td>@Html.DisplayFor(modelItem => item.EndTime)</td>
+                            
+                        }
+                        <td>@Html.DisplayFor(modelItem => item.Department)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Reason)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalHours)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EmployeeQty)</td>
+                        @if (item.IsUA == true)
+                        {
+                            <td>Tak</td>
+                        }
+                        else
+                        {
+                            <td>Nie</td>
+                        }
+                        <td>@Html.DisplayFor(modelItem => item.User.NameSurname)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="lead missing-text">Brak rekordów w bazie danych</p>
+        }
+    </div>
+</div>

@@ -1,0 +1,84 @@
+﻿<header>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            @if (!Program.IsUnderConstruction)
+            {
+                <a class="navbar-brand" asp-controller="Downtimes" asp-action="Create">    
+                    <img src="~/logo.png" alt="flex-logo"> Downtime Tracker
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand">    
+                    <img src="~/logo.png" alt="flex-logo"> Downtime Tracker
+                </a>
+            }
+            @if (!Program.IsUnderConstruction)
+            {
+                @if (!User.IsInRole("noaccess"))
+                {
+                    <button id="btn-hamburger" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="navbar-collapse collapse justify-content-between">
+                        <ul class="navbar-nav ms-auto">
+                            <!-- admin & editors links -->
+                            <li class="nav-item dropdown">
+                                <button class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-clock-history me-2"></i>Przestoje
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" asp-controller="Downtimes" asp-action="Create">Dodawanie</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Downtimes" asp-action="Index">Lista</a></li>
+                                </ul>
+                            </li>
+                            @*                        <li class="nav-item dropdown">
+                            <button class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-2"></i>HRM
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" asp-controller="Hrms" asp-action="Create">Dodawanie</a></li>
+                                <li><a class="dropdown-item" asp-controller="Hrms" asp-action="Index">Moja Lista</a></li>
+                                <li><a class="dropdown-item" asp-controller="Hrms" asp-action="Market">Wolne Zasoby</a></li>
+                                <li><a class="dropdown-item" asp-controller="Acceptations" asp-action="Index">Akceptacje</a></li>
+                            </ul>
+                        </li>*@
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://tcznt19.europe.ad.flextronics.com/HRM/my-resources/management" target="_blank">    
+                                    <i class="bi bi-info-circle me-2"></i>HRM
+                                </a>    
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Information" asp-action="Index">    
+                                    <i class="bi bi-info-circle me-2"></i>Informacje
+                                </a>    
+                            </li>
+                            @if (User.IsInRole("super") || User.IsInRole("admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <button class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear me-2"></i>Admininistracja
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-dark">
+                                        <li><a class="dropdown-item" asp-controller="MachineLines" asp-action="Index">Maszyny</a></li>
+                                        @if (User.IsInRole("super"))
+                                        {
+                                            <li><a class="dropdown-item" asp-controller="InfoRecords" asp-action="Index">Informacje</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Users" asp-action="Index">Użtkownicy</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </nav>
+</header>

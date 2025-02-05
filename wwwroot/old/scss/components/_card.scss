@@ -1,0 +1,47 @@
+﻿.card {
+    font-family: 'Monsterrat', Arial, Helvetica, sans-serif;
+    border: 3px solid $card_shadow;
+    border-radius: 1.5rem;
+    margin: .5rem;
+    height: 200px;
+    min-height: 200px;
+
+    .card-icon {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+
+
+        i {
+            color: $card_icon;
+            font-size: 5rem;
+        }
+    }
+
+    .card-body {
+        padding: 0 0.5rem;
+        display: flex;
+        justify-content: center;
+        border-top: 2px solid #e1e1e1;
+        background: #f9f9f9;
+        border-bottom-left-radius: 1.3rem;
+        border-bottom-right-radius: 1.3rem;
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            color: $card_title;
+            margin: 0;
+        }
+    }
+
+    &:hover {
+        .card-title {
+            color: $fuchsia;
+        }
+    }
+}

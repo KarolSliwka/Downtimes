@@ -1,0 +1,177 @@
+﻿@model DowntimeTracker.Models.Downtime
+@{
+    ViewData["Title"] = " - Edycja przestoju";
+    ViewData["Subtitle"] = "Edycja przestoju";
+}
+<!-- go back button -->
+<a class="btn btn-back" asp-controller="Downtimes" asp-action="Index" 
+    asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+    asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo" 
+    asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo"
+    asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+    asp-route-userId="@ViewBag.FilterCreator">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- Create form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="DowntimeId" />
+        <input type="hidden" asp-for="UserId" value="@ViewBag.UserId" />
+        <input type="hidden" asp-for="IsClaimable" id="claims_hidden"/>
+        <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+        <input type="hidden" name="pageNumber" value="@ViewBag.pageNumber" />
+        <input type="hidden" name="year_from" value="@ViewBag.FilterYearFrom" />
+        <input type="hidden" name="year_to" value="@ViewBag.FilterYearTo" />
+        <input type="hidden" name="week_from" value="@ViewBag.FilterWeekFrom" />
+        <input type="hidden" name="week_to" value="@ViewBag.FilterWeekTo" />
+        <input type="hidden" name="claimed" value="@ViewBag.FilterClaimed" />
+        <input type="hidden" name="department" value="@ViewBag.FilterDepartment" />
+        <input type="hidden" name="userId" value="@ViewBag.FilterCreator" />
+        <div class="row">  
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Department" class="control-label required"></label>
+                    <select asp-for="Department" id="department_create" class="form-select" aria-label="Primary Organization" onchange="GetTypes()">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach (var item in ViewBag.Departments)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Customer -->
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Customer" class="control-label required"></label>
+                    <select asp-for="Customer" id="customer" class="form-control" aria-label="Customer">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach (var item in ViewBag.Customers)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Customer" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Cateory -->
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label required"></label>
+                    <select asp-for="Category" class="form-control" id="category_create" aria-label="Category">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach (var item in ViewBag.Categories)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                     </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Reason -->
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label asp-for="Reason" class="control-label required"></label>
+                    <select asp-for="Reason" class="form-control" id="reason" aria-label="Reason">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach (var item in ViewBag.Reasons)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Machine Line Type -->
+            <div class="order-0 order-lg-0 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label class="form-label">Typ</label>
+                    <select class="form-control" id="type" onchange="GetMachines()">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        <option value="0">Obszar</option>
+                        <option value="1">Maszyna</option>
+                        <option value="2">Linia</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Machine / Line -->
+            <div class="order-1 order-lg-1 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="MachineLineAreaId" class="control-label required"></label>
+                    <select asp-for="MachineLineAreaId" class="form-control" id="machine" aria-label="Machines">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach (var item in ViewBag.Machines)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="MachineLineAreaId" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- To Be Claimed -->
+            <div class="order-5 order-lg-2 col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label class="control-label">Możliwe Roszczenie</label>
+                    <select class="form-control" id="claims" disabled>
+                        <option value="" selected>?</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Event Start Time -->
+            <div class="order-2 order-lg-3 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="EventStartTime" class="control-label required"></label>
+                    <input class="form-control datepicker" id="date_from" asp-for="EventStartTime" onchange="dateChange()"/>
+                    <span asp-validation-for="EventStartTime" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Event End Time -->
+            <div class="order-3 order-lg-4 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="EventEndTime" class="control-label required"></label>
+                    <input class="form-control datepicker" id="date_to" asp-for="EventEndTime" onchange="dateChange()"/>
+                    <span asp-validation-for="EventEndTime" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Number of peaople affected -->
+            <div class="order-4 order-lg-5 col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                <div class="form-group">
+                    <label asp-for="PeopleAffected" class="control-label required"></label>
+                    <input id="people_affected" asp-for="PeopleAffected" class="form-control" min="0" max="1000" placeholder="Min. 1 - Max. 1000" onchange="CalculateHours()"/>
+                    <span asp-validation-for="PeopleAffected" class="text-danger"></span>
+                    <small class="calculated-hrs">Przeliczone godziny: <span id="calculated_hours">00.00</span></small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <!-- Commentary -->
+            <div class="col-12">
+                <div class="form-group">
+                    <label asp-for="Commentary" class="control-label required"></label>
+                    <textarea asp-for="Commentary" id="commentary" class="form-control" rows="4" minlength="10" maxlength="1024" placeholder="Minimum 10 znaków"></textarea>
+                    <span asp-validation-for="Commentary" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row buttons mb-4">
+            <div class="col-12 col-sm-6">
+                <button type="reset" class="btn btn-primary" id="create_reset">Przywróć</button>
+            </div>
+            <div class="col-12 col-sm-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary" id="add_btn">Zapisz</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/js/record.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

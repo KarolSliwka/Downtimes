@@ -1,0 +1,31 @@
+﻿@model DowntimeTracker.Models.User
+@{
+    ViewData["Title"] = " - Usuwanie użytkownika";
+    ViewData["Subtitle"] = "Usuwanie użytkownika";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- Delete form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <dl class="row">
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.NameSurname)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.NameSurname)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.AccessLevel)</dt>
+        <dd class="col-sm-6 col-md-8">@Model.AccessLevel.ToString().Substring(0, 1).ToUpper()@Model.AccessLevel.ToString().Substring(1)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.HrmAvailable)</dt>
+        @if (Model.HrmAvailable == true) {
+            <dd class="col-sm-6 col-md-8">Tak</dd>
+        }
+        else {
+            <dd class="col-sm-6 col-md-8">Nie</dd>
+        }
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="UserId" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+    </form>
+</div>

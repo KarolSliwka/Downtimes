@@ -1,0 +1,46 @@
+﻿.db-info {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.hrm-list-record {
+    flex-direction: column;
+
+    p:first-child{
+        font-size: 1rem;
+        font-weight: 500
+    }
+
+    p:last-child {
+        font-size: 1rem;
+        font-weight: 300;
+    }
+}
+
+.events-info {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffeb00
+}
+
+.record-alert {
+    &:nth-child(odd) {
+        background-color: #cb4b4b54;
+    }
+
+    &:nth-child(even) {
+        background-color: #bb3c3c54; // #bb1c1c87;d
+    }
+}
+
+// less than 2hrs
+.less-hours {
+    &:nth-child(odd) {
+        background-color: #67d2e53a; //#67d2e587;
+    }
+
+    &:nth-child(even) {
+        background-color: #3ca0bb47; // #3ca0bb87;
+    }
+}

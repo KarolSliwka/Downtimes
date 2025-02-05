@@ -1,0 +1,23 @@
+﻿.information {
+    .accordion {
+        .accordion-item {
+            margin-bottom: .65rem;
+
+            .accordion-header { 
+                margin: 0 !important;
+
+                .accordion-button {
+                    width: 100%;
+                    max-width: 100%;
+                    border-radius: 0;
+                }
+            }
+
+            .accordion-body {
+                border: none;
+                padding: 1rem 0 2rem 0;
+                color: #fff;
+            }
+        }
+    }
+}

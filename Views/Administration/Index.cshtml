@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "- Administration";
+}
+<!-- Top section -->
+<div>
+    <div class="row my-2">
+        <div class="d-flex justify-content-between">
+            <h1>Administration</h1>
+        </div>
+    </div>
+    <!-- Separate stripe -->
+    <hr class="stripe" />
+    <!-- Create form -->
+    <div class="my-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6">
+            <!-- users -->
+            <div class="col">
+                <a class="card" asp-controller="Users" asp-action="Index">
+                    <!-- image -->
+                    <div class="card-icon">
+                        <i class="bi bi-person-gear"></i>
+                    </div>
+                    <!-- body -->
+                    <div class="card-body">
+                        <h5 class="card-title">Access</h5>
+                    </div>
+                </a>
+            </div>
+            <!-- machines -->
+            <div class="col">
+                <a class="card" asp-controller="MachineLines" asp-action="Index">
+                    <!-- image -->
+                    <div class="card-icon">
+                        <i class="bi bi-gear-wide-connected"></i>
+                    </div>
+                    <!-- body -->
+                    <div class="card-body">
+                        <h5 class="card-title">Machines/Lines</h5>
+                    </div>
+                </a>
+            </div>
+            @if (User.IsInRole("super"))
+            {
+                <!-- machines -->
+                <div class="col">
+                    <a class="card" asp-controller="InfoRecords" asp-action="Index">
+                    <!-- image -->
+                    <div class="card-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+                    <!-- body -->
+                    <div class="card-body">
+                        <h5 class="card-title">Informations</h5>
+                    </div>
+                </a>
+            </div>
+            }
+        </div>
+    </div>
+</div>

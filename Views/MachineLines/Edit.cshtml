@@ -1,0 +1,73 @@
+﻿@model DowntimeTracker.Models.MachineLineArea
+@{
+    ViewData["Title"] = " - Edycja Obszaru/Maszyny/Lini";
+    ViewData["Subtitle"] = "Edycja Obszaru/Maszyny/Lini";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- create form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="MachineLineAreaId" />
+        <div class="row">       
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label required"></label>
+                    <select asp-for="Type" class="form-control" asp-items="@ViewBag.Machines">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label required"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Wpisz.."/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">       
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Department" class="control-label required"></label>
+                    <select asp-for="Department" class="form-control">
+                            <option value="" selected disabled hidden>Wybierz..</option>
+                        @foreach(var item in ViewBag.Departments) {
+                            <option value="@item" >@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="OperatingTime" class="control-label required"></label>
+                    <select asp-for="OperatingTime" class="form-select">
+                        <option value="" selected disabled hidden>Wybierz..</option>
+                        <option value="8">8 Godzin</option>
+                        <option value="12">12 Godzin</option>
+                    </select>
+                    <span asp-validation-for="OperatingTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <!-- buttons -->
+        <div class="row buttons mb-4">
+            <div class="col-12 col-sm-6">
+                <button type="reset" class="btn btn-primary">Przywróć</button>
+            </div>
+            <div class="col-12 col-sm-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

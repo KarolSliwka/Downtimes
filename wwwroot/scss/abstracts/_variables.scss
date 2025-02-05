@@ -1,0 +1,45 @@
+﻿// root variables
+:root {
+    --blue-gradient: linear-gradient(135deg, rgba(0,84,134,1) 0%, rgba(0,154,221,1) 20%);
+    --green-gradient: linear-gradient(135deg, rgba(0,100,50,1) 0%, rgba(130,188,0,1) 20%);
+    --fuchsia-gradient: linear-gradient(135deg, rgba(127,30,94,1) 0%, rgba(186,37,125,1) 20%);
+    --gold-gradient: linear-gradient(135deg, rgba(206,109,40,1) 0%, rgba(241,181,44,1) 20%);
+    // buttons
+    --gold-gradient-add: linear-gradient(135deg, rgba(206,109,40,1) 0%, rgba(241,181,44,1) 80%);
+    --green-gradient-submit: linear-gradient(135deg, rgba(0,100,50,1) 0%, rgba(130,188,0,1) 80%);
+}
+
+// flex coloristic
+$d_grey: #262626;
+$blue: #009ADD;
+$d_blue: #005486;
+$green: #82BC00;
+$d_green: #006432;
+$fuchsia: #BA257D;
+$d_fuchsia: #7F1E5E;
+$gold: #F1B52C;
+$d_gold: #CE6D28;
+
+// flex gradients
+$blue_gradient:linear-gradient(135deg, rgba(0,84,134,1) 0%, rgba(0,154,221,1) 100%);
+$green_gradient: linear-gradient(135deg, rgba(0,100,50,1) 0%, rgba(130,188,0,1) 100%) ;
+$fuchsia_gradient: linear-gradient(135deg, rgba(127,30,94,1) 0%, rgba(186,37,125,1) 100%);
+$gold_gradient: linear-gradient(135deg, rgba(206,109,40,1) 0%, rgba(241,181,44,1) 100%);
+
+// navigation coloristic
+$nav_link: #fff;
+$nav_link_hover: #BA257D;
+
+// homepage coloristic
+$main_blue: #77c7d6;
+$btn_home: #BA257D;
+$btn_home_hover: #7F1E5E;
+
+// card coloristict
+$card_shadow: #e1e1e1;
+$card_icon: #adadad;
+$card_title: #adadad;
+
+// buttons
+$d_grey: #a3a3a3;
+$d_red: #e30000;

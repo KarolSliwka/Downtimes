@@ -1,0 +1,52 @@
+﻿.swal-modal {
+    border-radius: 1.5rem;
+    font-family: "Montserrat";
+}
+
+.swal-modal .swal-icon {
+    width: 60px;
+    height: 60px;
+}
+
+.swal-modal .swal-icon .swal-icon--warning__body {
+    height: 27px;
+}
+
+.swal-modal .swal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.swal-modal .swal-footer {
+    text-align: center;
+}
+
+.swal-modal .swal-footer .swal-button {
+    background-color: #707070;
+    border-radius: .625rem;
+    width: 100px;
+}
+
+.swal-modal .swal-footer .swal-button:hover {
+    background-color: #aeaeae;
+}
+
+.swal-modal:has(.swal-icon--error) {
+    border: 4px solid #f27474;
+}
+
+.swal-modal:has(.swal-icon--error) .swal-icon--error__line {
+    top: 29px;
+}
+
+.swal-modal:has(.swal-icon--error) .swal-icon--error__line--left {
+    left: 7px;
+}
+
+.swal-modal:has(.swal-icon--error) .swal-icon--error__line--right {
+    right: 6px;
+}
+
+.swal-modal:has(.swal-icon--warning) {
+    border: 4px solid #f8bb86;
+}

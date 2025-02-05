@@ -1,0 +1,213 @@
+﻿@model PaginatedList<DowntimeTracker.Models.Downtime>
+
+@{
+    ViewData["Title"] = " - Przestoje - lista";
+    ViewData["Subtitle"] = "Przestoje - lista";
+}
+<!-- downtimes list -->
+<div class="container-fluid my-4">
+    <div class="d-flex top-buttons">
+        <h1 class="me-auto">@ViewData["Subtitle"]</h1>
+        @if (!User.IsInRole("user"))
+        {
+        <div class="row export-buttons">
+            @if (User.IsInRole("super") || User.IsInRole("admin")){
+                <a class="btn-raptor" onclick="RaptorExport()">
+                    <img src="~/media/images/RaptorLogoWhite.png" alt="excel-download-button-icon"/>
+                </a>
+            }
+            @if (User.IsInRole("super") || User.IsInRole("admin") || User.IsInRole("visor")){
+                <a class="btn-excel ms-2" onclick="ExcelExport()">
+                    <img src="~/media/images/ExcelLogo.png" alt="excel-download-button-icon" class="me-2"/>
+                </a>
+            }
+        </div>
+    }
+    </div>
+    <hr class="title-line"/>
+</div>
+<!-- filters -->
+<partial name="Filters/_Filters" />
+<!-- Table with all records -->
+<div class="table-responsive mt-4">
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped" id="data_result">
+            <thead>
+                <tr class="text-nowrap align-middle">
+                    <th>#</th>
+                    <th class="d-none">Budynek</th>
+                    <th>
+                        <a href="@Url.Action("Index", "Downtimes", new { sortOrder = ViewBag.YearSort, year_from = ViewBag.FilterYearFrom, year_to = ViewBag.FilterYearTo, week_from = ViewBag.FilterWeekFrom,
+                            week_to = ViewBag.FilterWeekTo, claimed = ViewBag.FilterClaimed,department = ViewBag.FilterDepartment,userId = ViewBag.FilterCreator })" class="sort-button">Rok & Tydzień
+                            <i class="bi @ViewBag.YearClass ms-2"></i>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", "Downtimes", new { sortOrder = ViewBag.DateSort, year_from = ViewBag.FilterYearFrom, year_to = ViewBag.FilterYearTo, week_from = ViewBag.FilterWeekFrom,
+                            week_to = ViewBag.FilterWeekTo, claimed = ViewBag.FilterClaimed,department = ViewBag.FilterDepartment,userId = ViewBag.FilterCreator })" class="sort-button">Data Rozpoczęcia
+                            <i class="bi @ViewBag.DateClass ms-2"></i>
+                        </a>
+                    </th>
+                    <th>Data Zakończenia</th>
+                    <th>
+                        <a href="@Url.Action("Index", "Downtimes", new { sortOrder = ViewBag.PrimarySort, year_from = ViewBag.FilterYearFrom, year_to = ViewBag.FilterYearTo, week_from = ViewBag.FilterWeekFrom,
+                            week_to = ViewBag.FilterWeekTo, claimed = ViewBag.FilterClaimed,department = ViewBag.FilterDepartment,userId = ViewBag.FilterCreator })" class="sort-button">Główna Organizacja
+                            <i class="bi @ViewBag.PrimaryClass ms-2"></i>
+                        </a>
+                    </th>
+                    <th>Klient</th>
+                    <th>
+                        <a href="@Url.Action("Index", "Downtimes", new { sortOrder = ViewBag.AreaSort, year_from = ViewBag.FilterYearFrom, year_to = ViewBag.FilterYearTo, week_from = ViewBag.FilterWeekFrom,
+                            week_to = ViewBag.FilterWeekTo, claimed = ViewBag.FilterClaimed,department = ViewBag.FilterDepartment,userId = ViewBag.FilterCreator })" class="sort-button">Obszar/Maszyna/Linia
+                            <i class="bi @ViewBag.AreaClass ms-2"></i>
+                        </a>
+                    </th>
+                    <th>Kategoria</th>
+                    <th>Powód</th>
+                    <th>Ilość Pracowników</th>
+                    <th>Godziny</th>
+                    <th>Dodano Przez</th>
+                    <th>Utworzone Roszczenie</th>
+                    <th class="d-none">To Be Claimed</th>
+                    <th class="d-none">Approver Email/ADID</th>
+                    <th class="d-none">Year</th>
+                    <th class="d-none">Week</th>
+                    <th class="d-none">Created By</th>
+                    <th class="d-none">Creation Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            @{ int rowNo = (Model.PageIndex == 1 ? 0 : Model.PageIndex * 40 - 40); }
+            @foreach (var item in Model) {
+                <tr class="align-middle">
+                    <th scope="row">@(rowNo += 1)</th>
+                    <td class="d-none">@item.Site</td>
+                    <td>@item.Year<span>_W</span>@item.Week.ToString("00")</td>
+                    <!-- Date & Time for Raptor export -->
+                    <td class="d-none">@item.EventStartTime.AddHours(-6).ToString("yyyy-MM-dd")</td>
+                    <td class="d-none">@item.EventStartTime.ToString("HH:mm")</td>
+                    <!-- -->
+                    <td>@item.EventStartTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.EventEndTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@item.Department</td>
+                    <td>@item.Customer</td>
+                    <td>@item.MachineLineArea.Name</td>
+                    <td>@item.Category</td>
+                    <td>@item.Reason</td>
+                    <td>@item.PeopleAffected</td>
+                    <td>@item.TotalHours</td>
+                    <td>@item.User.NameSurname</td>
+                    @if (item.Claimed == true)
+                    {
+                        <td>Tak</td>
+                    }
+                    else
+                    {
+                        <td>Nie</td>
+                    }
+                    @if (item.IsClaimable == false)
+                    {
+                        <td class="d-none">No</td>           
+                    }
+                    else
+                    {
+                        <td class="d-none">Yes</td>           
+                    }
+                    <td class="d-none">@item.ApproverEmailADID</td>
+                    <td class="d-none">@item.Year</td>
+                    <td class="d-none">@item.Week</td>
+                    <td class="d-none">@item.CreatedBy</td>
+                    <td class="d-none">@item.CreationDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    @if (item.Claimed == true)
+                    {
+                        <td class="d-none">Yes</td>
+                    }
+                    else
+                    {
+                        <td class="d-none">No</td>
+                    }
+                    <td class="text-nowrap">
+                    <a asp-action="Details" asp-route-id="@item.DowntimeId"
+                        asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+                        asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo"
+                        asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo" 
+                        asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+                        asp-route-userId="@ViewBag.FilterCreator"
+                        class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Detale">
+                        <i class="bi bi-info-square-fill"></i>
+                    </a>
+                    @if (User.IsInRole("super"))
+                    {
+                    <a asp-action="Edit" asp-route-id="@item.DowntimeId"
+                        asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+                        asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo"
+                        asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo" 
+                        asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+                        asp-route-userId="@ViewBag.FilterCreator"
+                        class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Edytuj">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    }
+                    @if (User.Identity.Name == item.CreatedBy || User.IsInRole("super") || User.IsInRole("admin"))
+                    {
+                    <a asp-action="Delete" asp-route-id="@item.DowntimeId"
+                        asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+                        asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo"
+                        asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo" 
+                        asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+                        asp-route-userId="@ViewBag.FilterCreator"
+                        class="btn-action" data-bs-toggle="tooltip" data-bs-title="Usuń">
+                        <i class="bi bi-trash3-fill"></i>
+                    </a>    
+                    }
+                    @if ((User.IsInRole("super") || User.IsInRole("admin") || User.IsInRole("visor")) && item.Claimed == false)
+                    {
+                        if (item.IsClaimable == true)
+                        {
+                            <a asp-action="Claim" asp-route-id="@item.DowntimeId"
+                            asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-pageNumber="@ViewBag.pageNumber"
+                            asp-route-year_from="@ViewBag.FilterYearFrom" asp-route-year_to="@ViewBag.FilterYearTo"
+                            asp-route-week_from="@ViewBag.FilterWeekFrom" asp-route-week_to="@ViewBag.FilterWeekTo" 
+                            asp-route-claimed="@ViewBag.FilterClaimed" asp-route-department="@ViewBag.FilterDepartment" 
+                            asp-route-userId="@ViewBag.FilterCreator"
+                                class="btn-action ms-3" data-bs-toggle="tooltip" data-bs-title="Potwierdź dodanie roszczenia (claim) w Raptorze">
+                                <i class="bi bi-coin"></i>
+                            </a>
+                        }
+                    }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.AllItems > 40)
+        {
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            <div class="d-flex justify-content-between pagination">
+                <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                    <a asp-action="Index"  asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-year_from="@ViewData["FilterYearFrom"]" asp-route-year_to="@ViewData["FilterYearTo"]"
+                        asp-route-week_from="@ViewData["FilterWeekFrom"]" asp-route-week_to="@ViewData["FilterWeekTo"]"
+                        asp-route-claimed="@ViewData["FilterClaimed"]" asp-route-department="@ViewData["FilterDepartment"]" asp-route-userId="@ViewData["FilterCreator"]" asp-route-pageNumber="@(Model.PageIndex - 1)"
+                        class="btn btn-default @prevDisabled">Poprzednia</a>
+                    <a class="btn btn-default disabled mx-1">@Model.PageIndex / @Model.TotalPages</a>
+                    <a asp-action="Index"  asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-year_from="@ViewData["FilterYearFrom"]" asp-route-year_to="@ViewData["FilterYearTo"]"
+                        asp-route-week_from="@ViewData["FilterWeekFrom"]" asp-route-week_to="@ViewData["FilterWeekTo"]"
+                        asp-route-claimed="@ViewData["FilterClaimed"]" asp-route-department="@ViewData["FilterDepartment"]" asp-route-userId="@ViewData["FilterCreator"]" asp-route-pageNumber="@(Model.PageIndex + 1)"
+                        class="btn btn-default @nextDisabled" id="nextPageButton">Następna</a>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-6 d-flex justify-content-end counter">
+                    <a class="btn btn-records-counter disabled">@(Model.PageIndex == 1 ? 1 : Model.PageIndex * 40 - 39) -  @(Model.PageIndex == Model.TotalPages ? Model.AllItems : Model.PageIndex * 40) z @Model.AllItems</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="lead missing-text p-2">Brak rekordów w do wyświetlenia. Zastosuj filtry i spróbuj ponownie</p>
+    }
+</div>
+<!-- use version 0.19.2 -->
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>

@@ -1,0 +1,51 @@
+﻿table {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: .85rem;
+
+
+    .grand-total {
+        background-color: #000;
+        color: #fff;
+    }
+
+    i {
+        font-size: 1.125rem;
+    }
+
+    .badge {
+        border-radius: 1.25rem;
+        padding: 0.5rem 0.825rem;
+        font-weight: 500;
+        font-size: 12px !important;
+    }
+
+    .btn-save {
+        color: #1a8d2d;
+
+        &:hover {
+            color: #1a8d2d;
+        }
+    }
+
+    .record-alert {
+        th, tr, td {
+            color: #fff !important;
+        }
+
+        &:nth-child(odd) {
+            background-color: rgba(190, 59, 59, .7);
+        }
+
+        &:nth-child(even) {
+            background-color: rgba(190, 59, 59, .5);
+        }
+    }
+
+    .less-hours:nth-child(odd) {
+        background-color: rgba(103,210,229,.23);
+    }
+
+    .less-hours:nth-child(even) {
+        background-color: rgba(60,160,187,.29);
+    }
+}

@@ -1,0 +1,112 @@
+﻿@model DowntimeTracker.Models.InfoRecord
+@{
+    ViewData["Title"] = " - Dodawanie informacji";
+    ViewData["Subtitle"] = "Dodawanie informacji";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- create form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">       
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label required"></label>
+                    <input asp-for="Category" class="form-control" placeholder="1) Planned DT" maxlength="256"/>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="CorporateReason" class="control-label required"></label>
+                    <input asp-for="CorporateReason" class="form-control" placeholder="P01-Equipment PM" maxlength="256"/>
+                    <span asp-validation-for="CorporateReason" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="M4Category" class="control-label required"></label>
+                    <select asp-for="M4Category" class="form-select">
+                        <option value="" selected disabled hidden>Select..</option>
+                        <option value="Machine">Machine</option>
+                        <option value="Man">Man</option>
+                        <option value="Material">Material</option>
+                        <option value="Method">Method</option>
+                    </select>
+                    <span asp-validation-for="M4Category" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label required"></label>
+                    <select asp-for="Type" class="form-select">
+                        <option value="" selected disabled hidden>Select..</option>
+                        <option value="Efficiency Loss">Efficiency Loss</option>
+                        <option value="Inoperative Time">Inoperative Time</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Responsible" class="control-label required"></label>
+                    <select asp-for="Responsible" class="form-select">
+                        <option value="" selected disabled hidden>Select..</option>
+                        <option value="Team Leader">Team Leader</option>
+                        <option value="Supervisor">Supervisor</option>
+                    </select>
+                    <span asp-validation-for="Responsible" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="form-group d-flex flex-column">
+                    <label asp-for="IsClaimable" class="control-label required"></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input is-corrected" type="checkbox" role="switch" id="IsClaimable" asp-for="IsClaimable" />
+                        <label class="form-check-label is-corrected-label" for="IsClaimable">Nie</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="form-group d-flex flex-column">
+                    <label asp-for="IsVisible" class="control-label required"></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input is-corrected" type="checkbox" role="switch" id="IsVisible" asp-for="IsVisible" />
+                        <label class="form-check-label is-corrected-label" for="IsVisible">Nie</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Example" class="control-label"></label>
+            <textarea asp-for="Example" class="form-control" maxlength="1024"></textarea>
+            <span asp-validation-for="Example" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Explanation" class="control-label required"></label>
+            <textarea asp-for="Explanation" class="form-control" maxlength="1024"></textarea>
+            <span asp-validation-for="Explanation" class="text-danger"></span>
+        </div>
+        <!-- buttons -->
+        <div class="row buttons mb-4">
+            <div class="col-12 col-sm-6">
+                <button type="reset" class="btn btn-primary">Wyczyść</button>
+            </div>
+            <div class="col-12 col-sm-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

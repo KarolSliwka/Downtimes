@@ -1,0 +1,61 @@
+﻿@model DowntimeTracker.Models.InfoRecord
+@{
+    ViewData["Title"] = " - Usuwanie informacji";
+    ViewData["Subtitle"] = "Usuwanie informacji";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- Delete form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <dl class="row">
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Category)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Category)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.CorporateReason)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.CorporateReason)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.M4Category)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.M4Category)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.IsClaimable)</dt>
+        @switch (Model.IsClaimable)
+        {
+            case true: 
+                <dd class="col-sm-6 col-md-8">Tak</dd>
+                break;
+            case false: 
+                <dd class="col-sm-6 col-md-8">Nie</dd>    
+                break;
+        }
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Type)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Type)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Example)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Example)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Explanation)</dt>
+        @if (!string.IsNullOrEmpty(Model.Explanation))
+        {
+            <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Explanation)</dd>
+        }
+        else 
+        {
+            <dd class="col-sm-6 col-md-8">Brak wytłumaczenia..</dd>
+        }
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Responsible)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Responsible)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.IsVisible)</dt>
+        @switch (Model.IsVisible)
+        {
+            case true: 
+                <dd class="col-sm-6 col-md-8">Tak</dd>
+                break;
+            case false: 
+                <dd class="col-sm-6 col-md-8">Nie</dd>    
+                break;
+        }
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="InfoRecordId" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+    </form>
+</div>

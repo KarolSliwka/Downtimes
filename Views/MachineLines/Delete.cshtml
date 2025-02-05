@@ -1,0 +1,39 @@
+﻿@model DowntimeTracker.Models.MachineLineArea
+@{
+    ViewData["Title"] = " - Usuwanie Obszaru/Maszyny/Lini";
+    ViewData["Subtitle"] = "Usuwanie Obszaru/Maszyny/Lini";
+}
+<!-- go back button -->
+<a class="btn btn-back" onclick="history.back()">
+    <img src="~/media/icons/back.png" alt="go back button" class="opacity-25 me-2" width="20" height="20"/>Wróć
+</a>
+<!-- Delete form -->
+<div class="container my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <dl class="row">
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Type)</dt>
+        @switch (Model.Type)
+        {
+            case 0: 
+                <dd class="col-sm-6 col-md-8">Obszar</dd>
+                break;
+            case 1: 
+                <dd class="col-sm-6 col-md-8">Obszar</dd>
+                break;
+            case 2:
+                <dd class="col-sm-6 col-md-8">Obszar</dd>
+                break;
+        }
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Department)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Department)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.Name)</dd>
+        <dt class="col-sm-6 col-md-4">@Html.DisplayNameFor(model => model.OperatingTime)</dt>
+        <dd class="col-sm-6 col-md-8">@Html.DisplayFor(model => model.OperatingTime) godz.</dd>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MachineLineAreaId" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+    </form>
+</div>

@@ -1,0 +1,112 @@
+﻿<form method="GET" asp-action="Index">
+    <div class="accordion" id="filters">
+        <div class="accordion-item">
+            <h6 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#collapseTwo" aria-expanded="false">Filtry
+                </button>
+            </h6>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#filters">
+                <div class="accordion-body">
+                    <div class="row d-flex justify-content-end">
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2">
+                            <!-- year from -->
+                            <div class="form-group">
+                                <label class="control-label required">Rok Od</label>
+                                <select id="year_from" name="year_from" class="form-select" required onchange="checkFilters()">
+                                    <option value="" selected>Wybierz..</option>
+                                    @foreach(var item in ViewBag.YearFrom)
+                                    {
+                                    <option value="@item">@item</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- week from -->
+                            <div class="form-group">
+                                <label class="control-label required">Tydzień Od</label>
+                                <select id="week_from" name="week_from" class="form-select" disabled required onchange="checkFilters()">
+                                    <option value="" selected>Wybierz..</option>
+                                    @foreach(var item in ViewBag.WeekFrom)
+                                    {
+                                    <option value="@item">@item</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2">
+                            <!-- year to -->
+                            <div class="form-group">
+                                <label class="control-label required">Rok Do</label>
+                                <select id="year_to" name="year_to" class="form-select" disabled required onchange="checkFilters()">
+                                    <option value="" selected>Wybierz..</option>
+                                    @foreach(var item in ViewBag.YearTo)
+                                    {
+                                    <option value="@item">@item</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- week to -->
+                            <div class="form-group">
+                                <label class="control-label required">Tydzień Do</label>
+                                <select id="week_to" name="week_to" class="form-select" disabled required onchange="checkFilters()">
+                                    <option value="" selected>Wybierz..</option>
+                                    @foreach(var item in ViewBag.WeekTo)
+                                    {
+                                    <option value="@item">@item</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-xl-8">
+                            <div class="row">
+                                <!-- primary organization -->
+                                <div class="form-group">
+                                    <label class="control-label">Główna Organizacja</label>
+                                    <select id="department" name="department" class="form-select" disabled onchange="checkFilters()">
+                                        <option value="" selected>Wybierz..</option>
+                                        @foreach(var item in ViewBag.Departments)
+                                        {
+                                        <option value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- claimed -->
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Utworzone Roszczenie</label>
+                                        <select id="claimed" name="claimed" class="form-select" disabled onchange="checkFilters()">
+                                            <option value="" selected>Wybierz..</option>
+                                            <option value="false">Nie</option>
+                                            <option value="true">Tak</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- added by -->
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Dodane Przez</label>
+                                        <select class="form-control" id="userId" name="userId" disabled onchange="checkFilters()">
+                                            <option value="" selected>Wybierz..</option>
+                                            @foreach (var item in ViewBag.Creators)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- button -->
+                        <div class="col-lg-3 downtime-buttons order-5">
+                            <button class="btn btn-primary-submit ms-auto" id="apply_filters" type="submit" onclick="getParameters()" disabled>Szukaj</button>
+                            <button class="btn btn-primary ms-2" id="clear_filters" type="reset">Wyczyść</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

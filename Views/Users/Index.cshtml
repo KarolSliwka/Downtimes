@@ -1,0 +1,99 @@
+﻿@model PaginatedList<DowntimeTracker.Models.User>
+@{
+    ViewData["Title"] = " - Użytkownicy";
+    ViewData["Subtitle"] = "Użytkownicy";
+}
+<!-- users list -->
+<div class="container-fluid my-4">
+    <h1>@ViewData["Subtitle"]</h1>
+    <hr class="title-line"/>
+    <!-- create button -->
+    @if (User.IsInRole("super"))
+    {
+        <div class="text-end">
+            <a asp-action="Create" class="btn btn-primary mt-0 mb-2">Dodaj</a>
+        </div>
+    }
+    <!-- table -->
+    <div class="table-responsive">
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th>#</th>
+                        <th>User ID</th>
+                        <th>Imię & Nazwisko</th>
+                        <th>Poziom Dostępu</th>
+                        <th>Dostęp do HRM?</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                @{ int rowNo = (Model.PageIndex == 1 ? 0 : Model.PageIndex * 20 - 20); }
+                @foreach (var item in Model) {
+                    <tr class="align-middle">
+                        <th scope="row">@(rowNo += 1)</th>
+                        <td>@item.UserAd</td>
+                        <td>@item.NameSurname</td>
+                        <td>@item.AccessLevel.ToString().Substring(0, 1).ToUpper()@item.AccessLevel.ToString().Substring(1)</td>
+                        @if (item.HrmAvailable == true)
+                        {
+                            <td>Tak</td>
+                        }
+                        else
+                        {
+                            <td>Nie</td>
+                        }
+                        <td class="text-end text-nowrap">
+                        @if (item.AccessLevel != "super" || item.AccessLevel != "super")
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.UserId" class="btn-action me-2" data-bs-toggle="tooltip" data-bs-title="Edytuj">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            @if (User.IsInRole("super"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.UserId" class="btn-action" data-bs-toggle="tooltip" data-bs-title="Usuń">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </a>
+                                }
+                            }
+                            else
+                            {
+                                <button class="btn-action me-2 disabled" data-bs-toggle="tooltip" data-bs-title="Edytuj" disabled>
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+                                @if (User.IsInRole("super"))
+                                {
+                                    <button class="btn-action disabled" data-bs-toggle="tooltip" data-bs-title="Usuń" disabled>
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @if (Model.AllItems > 20)
+            {    
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : ""; 
+                <div class="d-flex justify-content-between pagination">
+                    <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">Poprzednia</a>
+                        <a class="btn btn-default disabled mx-1">@Model.PageIndex / @Model.TotalPages</a>
+                        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">Następna</a>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-4 col-lg-6 d-flex justify-content-end counter">
+                        <a class="btn btn-records-counter disabled">@(Model.PageIndex == 1 ? 1 : Model.PageIndex * 20 - 19) -  @(Model.PageIndex == Model.TotalPages ? Model.AllItems : Model.PageIndex * 20) z @Model.AllItems</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="lead missing-text">Brak rekordów w bazie danych</p>
+        }
+    </div>
+</div>
